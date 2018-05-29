@@ -5,11 +5,20 @@ import com.rodly.domain.PersonRepository
 
 class PersonRepositoryImpl : PersonRepository {
 
-  override fun getPerson(): Person {
-    return Person("Rodney")
+  override fun getExamplePerson(): Person {
+    return getPersons().first()
+  }
+
+  override fun getPerson(name: String): Person? {
+    return getPersons().find { it.name == name }
   }
 
   override fun getPersons(): List<Person> {
-    return listOf(Person("Bob"), Person("Sally"))
+    return listOf(Person("Rodney"), Person("Bob"), Person("Sally"))
   }
+
+  override fun getFriends(person: Person): List<Person> {
+    return getPersons().minus(person)
+  }
+
 }

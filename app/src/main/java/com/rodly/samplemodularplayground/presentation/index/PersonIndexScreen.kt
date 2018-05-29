@@ -1,21 +1,17 @@
 package com.rodly.samplemodularplayground.presentation.index
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import com.rodly.di.ComponentProvider
 import com.rodly.domain.PersonRepository
-import com.rodly.persondetail.PersonDetailScreen
 import com.rodly.samplemodularplayground.DaggerViewComponent
-import com.rodly.samplemodularplayground.PlaygroundApplication
-import com.rodly.samplemodularplayground.R
+import com.rodly.samplemodularplayground.nav.NavigableFragment
 import javax.inject.Inject
 
-class PersonIndexScreen : Fragment() {
+class PersonIndexScreen : NavigableFragment() {
 
   @Inject
   lateinit var repository: PersonRepository
@@ -27,20 +23,12 @@ class PersonIndexScreen : Fragment() {
         .inject(this)
 
     return Button(context).apply {
-      text = repository.getPerson().name
+      val person = repository.getExamplePerson()
+      text = person.name
       setOnClickListener {
-        fragmentManager!!
-            .beginTransaction()
-            .replace(R.id.container, PersonDetailScreen())
-            .addToBackStack(null)
-            .commit()
+        navigator!!.personDetail(person)
       }
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    Toast.makeText(activity!!, repository.getPersons().toString(), Toast.LENGTH_LONG).show()
   }
 
 }
